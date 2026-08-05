@@ -18,11 +18,13 @@ const links = [
     class="neo-container flex h-16 items-center justify-between gap-3 sm:h-[4.75rem] sm:gap-4"
     aria-label="Primary"
   >
-    {/* "/ STUDIO" is dropped below sm. The row has to fit a 44px hamburger and
-        a CTA at 320px, and the wordmark is legible without the suffix. */}
+    {/* shrink-0, not min-w-0. The wordmark is `whitespace-nowrap`, so allowing
+        its flex item to shrink below content width did not reflow it — it just
+        let the CTA overlap it. The wordmark now holds its width and the CTA is
+        what gives way (see below). "/ STUDIO" still drops below sm. */}
     <a
       href="#top"
-      class="group flex min-w-0 items-center gap-2 font-display text-base font-extrabold tracking-tight uppercase sm:text-lg lg:text-xl"
+      class="group flex shrink-0 items-center gap-2 font-display text-base font-extrabold tracking-tight uppercase sm:text-lg lg:text-xl"
     >
       <span
         class="inline-grid size-8 shrink-0 place-items-center rounded-neo-sm border-2 border-neo-black bg-neo-yellow text-sm shadow-neo-sm transition-transform duration-150 group-hover:rotate-12 sm:size-9 sm:border-3 sm:text-base"
@@ -49,8 +51,12 @@ const links = [
       }
     </ul>
 
+    {/* The CTA appears at lg, the same breakpoint the inline nav links appear —
+        that is the first width with room for wordmark + links + button. It was
+        previously showing from sm (640px), where it collided with the wordmark.
+        Below lg the CTA lives in the menu panel instead, so it is never lost. */}
     <div class="flex items-center gap-2">
-      <NeoButton href="#book" variant="yellow" size="sm" class="hidden sm:inline-flex">
+      <NeoButton href="#book" variant="yellow" size="sm" class="hidden lg:inline-flex">
         Book a Shoot
       </NeoButton>
 
@@ -96,7 +102,9 @@ const links = [
           </li>
         ))
       }
-      <li class="sm:hidden">
+      {/* Always present in the panel. The panel itself is lg:hidden, and the
+          header CTA takes over at lg, so the two never both appear. */}
+      <li>
         <NeoButton href="#book" variant="yellow" size="sm" class="w-full" data-nav-link>
           Book a Shoot
         </NeoButton>

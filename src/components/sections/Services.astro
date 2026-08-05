@@ -81,17 +81,22 @@ const services = [
       </p>
     </div>
 
-    <div data-reveal-grid class="mt-10 grid sm:mt-14 gap-6 sm:grid-cols-2 lg:gap-8">
+    {/* Two-up starts at md (768px), not sm (640px). These cards carry a heading,
+        a paragraph and a four-item list; at 640px a two-column split left each
+        one ~226px of inner width, which broke "Social Media Management" across
+        three lines and wrapped the longer deliverables. One column until there
+        is genuinely room for two. */}
+    <div data-reveal-grid class="mt-10 grid gap-6 sm:mt-14 md:grid-cols-2 lg:gap-8">
       {
         services.map((service) => (
-          <article class="neo-press group flex flex-col rounded-neo border-3 border-neo-black bg-neo-offwhite p-6 shadow-neo sm:p-7 lg:p-9">
+          <article class="neo-press group flex min-w-0 flex-col rounded-neo border-3 border-neo-black bg-neo-offwhite p-6 shadow-neo sm:p-7 lg:p-9">
             <div class="flex items-start justify-between gap-4">
               <span
-                class={`inline-grid size-14 shrink-0 place-items-center rounded-neo-sm border-3 border-neo-black text-neo-black shadow-neo-sm transition-transform duration-150 group-hover:scale-105 ${accents[service.accent]}`}
+                class={`inline-grid size-12 shrink-0 place-items-center rounded-neo-sm border-3 border-neo-black text-neo-black shadow-neo-sm transition-transform duration-150 group-hover:scale-105 sm:size-14 ${accents[service.accent]}`}
                 aria-hidden="true"
               >
                 <svg
-                  class="size-7"
+                  class="size-6 sm:size-7"
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
@@ -109,17 +114,21 @@ const services = [
               </span>
             </div>
 
-            <h3 class="mt-6 font-display text-2xl font-extrabold uppercase sm:text-3xl">
+            <h3 class="mt-5 font-display text-base font-extrabold uppercase sm:mt-6 sm:text-xl md:text-2xl lg:text-3xl">
               {service.title}
             </h3>
 
-            <p class="mt-4 leading-relaxed text-neo-black/70">{service.body}</p>
+            <p class="mt-3 text-sm leading-relaxed text-neo-black/70 sm:mt-4 sm:text-base">
+              {service.body}
+            </p>
 
-            <ul class="mt-7 flex flex-col gap-2 border-t-2 border-neo-black/10 pt-6">
+            <ul class="mt-6 flex flex-col gap-2 border-t-2 border-neo-black/10 pt-5 sm:mt-7 sm:pt-6">
               {service.deliverables.map((deliverable) => (
-                <li class="flex items-center gap-3 font-mono text-xs font-bold tracking-wider uppercase">
+                /* items-start, not items-center: these wrap on narrow cards, and
+                   centring pushed the tick to the middle of a two-line row. */
+                <li class="flex items-start gap-3 font-mono text-[0.6875rem] font-bold tracking-wider uppercase sm:text-xs">
                   <svg
-                    class="size-4 shrink-0"
+                    class="mt-px size-4 shrink-0"
                     viewBox="0 0 24 24"
                     fill="none"
                     stroke="currentColor"

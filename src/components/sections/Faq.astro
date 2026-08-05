@@ -44,7 +44,7 @@ const faqs = [
 <section id="faq" class="scroll-mt-24 py-16 sm:py-24 lg:py-32">
   <div class="neo-container">
     <div class="grid gap-12 lg:grid-cols-12 lg:gap-16">
-      <div class="lg:col-span-5">
+      <div class="min-w-0 lg:col-span-5">
         <div data-reveal class="lg:sticky lg:top-28">
           <SectionHeading eyebrow="Questions" index="04" accent="purple">
             Everything<br class="hidden sm:inline" />You'd Ask
@@ -59,18 +59,30 @@ const faqs = [
         </div>
       </div>
 
-      <div data-reveal class="flex flex-col gap-4 lg:col-span-7">
+      {/*
+        The tightest row on the page: an uppercase Syne question competing with
+        a fixed-width icon inside a card gutter. At 320px the usable text width
+        is ~202px, and "ENGAGEMENT" — the longest unbreakable token across the
+        six questions — measures 12.38px per point of font size, so anything
+        above ~16px clips. Hence text-sm on mobile, plus a narrower gutter, a
+        smaller icon and a tighter gap to buy the question back some width.
+
+        items-start rather than items-center on mobile: these wrap to two or
+        three lines on a phone, and centring parked the icon against the middle
+        line instead of the first.
+      */}
+      <div data-reveal class="flex min-w-0 flex-col gap-3 sm:gap-4 lg:col-span-7">
         {
           faqs.map((faq) => (
             <details class="group rounded-neo border-3 border-neo-black bg-neo-offwhite shadow-neo">
-              <summary class="flex min-h-16 cursor-pointer items-center justify-between gap-4 rounded-neo px-5 py-4 font-display text-lg sm:gap-5 sm:px-6 sm:py-5 font-bold uppercase transition-colors duration-150 group-open:rounded-b-none group-open:bg-neo-purple sm:text-xl">
-                {faq.question}
+              <summary class="flex min-h-14 cursor-pointer items-start justify-between gap-3 rounded-neo px-4 py-4 font-display text-sm leading-snug font-bold uppercase transition-colors duration-150 group-open:rounded-b-none group-open:bg-neo-purple sm:min-h-16 sm:items-center sm:gap-5 sm:px-6 sm:py-5 sm:text-lg lg:text-xl">
+                <span class="min-w-0">{faq.question}</span>
                 <span
-                  class="inline-grid size-8 shrink-0 place-items-center rounded-neo-sm border-2 border-neo-black bg-neo-offwhite transition-transform duration-200 group-open:rotate-45"
+                  class="mt-px inline-grid size-7 shrink-0 place-items-center rounded-neo-sm border-2 border-neo-black bg-neo-offwhite transition-transform duration-200 group-open:rotate-45 sm:mt-0 sm:size-8"
                   aria-hidden="true"
                 >
                   <svg
-                    class="size-4"
+                    class="size-3.5 sm:size-4"
                     viewBox="0 0 24 24"
                     fill="none"
                     stroke="currentColor"
@@ -82,8 +94,10 @@ const faqs = [
                 </span>
               </summary>
 
-              <div class="border-t-2 border-neo-black/15 px-5 pt-5 pb-6 sm:px-6">
-                <p class="leading-relaxed text-neo-black/80">{faq.answer}</p>
+              <div class="border-t-2 border-neo-black/15 px-4 pt-4 pb-5 sm:px-6 sm:pt-5 sm:pb-6">
+                <p class="text-sm leading-relaxed text-neo-black/80 sm:text-base">
+                  {faq.answer}
+                </p>
               </div>
             </details>
           ))

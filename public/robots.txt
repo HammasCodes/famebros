@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://famebros.studio/sitemap-index.xml
+Sitemap: https://famebros.vercel.app/sitemap-index.xml

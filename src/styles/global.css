@@ -41,22 +41,28 @@
   --font-sans: var(--font-space-grotesk);
   --font-mono: var(--font-jetbrains-mono);
 
-  /* Fluid display sizes — these repeat across sections, so they are tokens.
-     The `min` of a clamp is what actually governs on phones: below roughly
-     800px the vw term falls under it, so the min IS the mobile size. These were
-     originally set from the desktop end (hero min 2.75rem = 44px), which put a
-     44px headline inside a ~287px-wide panel at 375px and pushed the page into
-     horizontal scroll. Sized from the narrow end instead, then allowed to run
-     up: the vw terms are steeper to compensate, so the desktop end is unchanged.
+  /* Fluid display sizes. The `min` of a clamp is what actually governs on
+     phones — below roughly 800px the vw term falls under it — so the min IS the
+     mobile size and has to be chosen for the narrowest case.
 
-     Widths checked against Syne ExtraBold at ~0.60em average uppercase advance,
-     for the longest line in each role, at 320px / 375px / 430px. */
-  --text-hero: clamp(2.25rem, 10vw, 7rem);
-  --text-hero--line-height: 0.92;
+     These are set from *measured* Syne ExtraBold widths, not an assumed em
+     advance. Syne is an extended face: uppercase runs about 0.9em per character,
+     roughly 50% wider than a normal grotesque. Rendering the real TTF gives
+     these per-point widths for the longest unbreakable token in each role:
+
+       "GO VIRAL."   8.09 px/pt   hero, inside a 234px panel at 320px → max 28px
+       "EVERYTHING" 11.03 px/pt   section heading, 280px at 320px     → max 25px
+       "10M+"        3.89 px/pt   stat                                → max 58px
+
+     Sized with headroom below those ceilings. Getting this wrong does not cause
+     a scrollbar — `overflow-x: clip` below contains it — it silently clips the
+     end off the largest words on the page, which is worse. */
+  --text-hero: clamp(1.625rem, 8.5vw, 7rem);
+  --text-hero--line-height: 0.94;
   --text-hero--letter-spacing: -0.03em;
 
-  --text-section: clamp(1.875rem, 6vw, 3.75rem);
-  --text-section--line-height: 1;
+  --text-section: clamp(1.5rem, 7.5vw, 3.75rem);
+  --text-section--line-height: 1.02;
   --text-section--letter-spacing: -0.02em;
 
   --text-stat: clamp(2.5rem, 7vw, 4.5rem);
@@ -123,6 +129,20 @@
   @media (prefers-reduced-motion: reduce) {
     transition: none;
   }
+}
+
+/* Native select controls render inconsistently across mobile browsers and
+   ignore most of the border/radius language. Stripping the appearance and
+   supplying our own chevron keeps the field identical to the text inputs
+   beside it. The tap still opens the native picker, which is the right
+   behaviour on a phone. */
+@utility neo-select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230F0F0F' stroke-width='3' stroke-linecap='square'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.875rem center;
+  background-size: 1.125rem 1.125rem;
+  padding-right: 2.75rem;
 }
 
 /* Page gutter, used by every section wrapper. */
@@ -199,16 +219,12 @@ html.lenis body {
     text-rendering: optimizeLegibility;
   }
 
-  /* Long unbroken strings — an email address, a URL — must not set the minimum
-     width of their container on a 320px screen. */
-  h1,
-  h2,
-  h3,
-  h4,
-  p,
-  li,
-  dd,
-  dt {
+  /* Long unbroken strings — an email address, a URL, a very long word — must
+     not set the minimum width of their container on a 320px screen.
+     Declared on body so it inherits everywhere, including text inside
+     <summary>, inside spans, and bare text nodes in flex containers. It costs
+     nothing until a word genuinely cannot fit. */
+  body {
     overflow-wrap: break-word;
   }
 

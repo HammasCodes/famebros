@@ -94,7 +94,7 @@ const projects = [
     >
       {
         projects.map((project) => (
-          <article class="neo-press group overflow-hidden rounded-neo border-3 border-neo-black bg-neo-offwhite shadow-neo">
+          <article class="neo-press group min-w-0 overflow-hidden rounded-neo border-3 border-neo-black bg-neo-offwhite shadow-neo">
             <div class="relative overflow-hidden border-b-3 border-neo-black">
               <Picture
                 src={project.image}
@@ -120,7 +120,7 @@ const projects = [
               <p class="font-mono text-xs font-bold tracking-widest text-neo-black/40 uppercase">
                 {project.label}
               </p>
-              <h3 class="font-display text-2xl font-extrabold uppercase">
+              <h3 class="font-display text-xl font-extrabold uppercase sm:text-2xl">
                 {project.client}
               </h3>
               <p class="mt-1 inline-flex items-center gap-2 font-mono text-sm font-bold">

@@ -10,10 +10,21 @@ const services = [
   'Full retainer — all of it',
 ];
 
+/**
+ * `min-w-0` matters more than it looks. Form controls carry an intrinsic width
+ * from their default `size`/`cols` (roughly 170–200px), and a grid item's
+ * default `min-width: auto` refuses to shrink below that. On a 320px screen the
+ * inner width is ~232px, so the field's own minimum was setting the column
+ * floor and pushing the card wider than its container. `w-full` alone does not
+ * fix it — percentage widths are treated as auto during intrinsic sizing.
+ *
+ * `text-base` is also load-bearing: iOS Safari zooms the viewport on focus for
+ * any input under 16px, and never zooms back out.
+ */
 const fieldClass =
-  'w-full min-h-12 rounded-neo-sm border-3 border-neo-black bg-neo-offwhite px-4 py-3 text-base placeholder:text-neo-black/35 user-invalid:border-neo-red';
+  'w-full min-w-0 min-h-12 rounded-neo-sm border-3 border-neo-black bg-neo-offwhite px-4 py-3 text-base placeholder:text-neo-black/35 user-invalid:border-neo-red';
 const labelClass =
-  'mb-2 block font-mono text-xs font-bold tracking-wider uppercase';
+  'mb-2 block font-mono text-[0.6875rem] font-bold tracking-wider uppercase sm:text-xs';
 
 const details = [
   { label: 'Email', value: CONTACT.email, href: `mailto:${CONTACT.email}` },
@@ -28,7 +39,7 @@ const details = [
 >
   <div class="neo-container">
     <div class="grid gap-12 lg:grid-cols-12 lg:gap-16">
-      <div data-reveal class="lg:col-span-5">
+      <div data-reveal class="min-w-0 lg:col-span-5">
         <p
           class="font-mono text-xs font-bold tracking-[0.2em] text-neo-black/60 uppercase"
         >
@@ -71,7 +82,7 @@ const details = [
         </dl>
       </div>
 
-      <div data-reveal class="lg:col-span-7">
+      <div data-reveal class="min-w-0 lg:col-span-7">
         {/*
           DEMO FORM — NOT CONNECTED.
 
@@ -84,8 +95,11 @@ const details = [
           id="booking-form"
           class="rounded-neo border-4 border-neo-black bg-neo-offwhite p-5 shadow-neo sm:p-7 lg:p-9"
         >
-          <div class="grid gap-6 sm:grid-cols-2">
-            <div>
+          {/* Name/email pair goes two-up at md, not sm — at 640px each column
+              was ~250px, which is below a comfortable input width once the
+              label and 3px borders are accounted for. */}
+          <div class="grid gap-5 sm:gap-6 md:grid-cols-2">
+            <div class="min-w-0">
               <label class={labelClass} for="field-name">Your name</label>
               <input
                 class={fieldClass}
@@ -98,7 +112,7 @@ const details = [
               />
             </div>
 
-            <div>
+            <div class="min-w-0">
               <label class={labelClass} for="field-email">Email</label>
               <input
                 class={fieldClass}
@@ -111,7 +125,7 @@ const details = [
               />
             </div>
 
-            <div class="sm:col-span-2">
+            <div class="min-w-0 md:col-span-2">
               <label class={labelClass} for="field-brand">Brand or company</label>
               <input
                 class={fieldClass}
@@ -123,28 +137,35 @@ const details = [
               />
             </div>
 
-            <div class="sm:col-span-2">
+            <div class="min-w-0 md:col-span-2">
               <label class={labelClass} for="field-service">
                 What do you need?
               </label>
-              <select class={fieldClass} id="field-service" name="service" required>
+              <select
+                class={`${fieldClass} neo-select`}
+                id="field-service"
+                name="service"
+                required
+              >
                 <option value="" selected disabled>Pick a service</option>
                 {services.map((service) => <option value={service}>{service}</option>)}
               </select>
             </div>
 
-            <div class="sm:col-span-2">
+            <div class="min-w-0 md:col-span-2">
               <label class={labelClass} for="field-message">
                 Tell us about the project
               </label>
+              {/* A textarea placeholder wraps, so length is safe here — unlike
+                  an input, where anything past the field width is simply cut. */}
               <textarea
-                class={`${fieldClass} min-h-32 resize-y`}
+                class={`${fieldClass} min-h-28 resize-y sm:min-h-32`}
                 id="field-message"
                 name="message"
                 rows="4"
-                placeholder="We're launching a new product line in October and need reels plus a brand shoot."
+                placeholder="Launching a new product line in October — need reels and a brand shoot."
                 required></textarea>
-              <p class="mt-2 font-mono text-xs text-neo-black/50">
+              <p class="mt-2 font-mono text-[0.6875rem] leading-relaxed text-neo-black/50 sm:text-xs">
                 Budget range and timeline help us reply with something useful.
               </p>
             </div>
@@ -156,7 +177,7 @@ const details = [
             <NeoButton type="submit" variant="yellow" class="w-full sm:w-auto">
               Send Enquiry
             </NeoButton>
-            <p class="font-mono text-xs text-neo-black/50">
+            <p class="font-mono text-[0.6875rem] text-neo-black/50 sm:text-xs">
               No spam. No newsletter. Just a reply.
             </p>
           </div>
@@ -183,7 +204,7 @@ const details = [
               <path d="m5 12 5 5L20 7"></path>
             </svg>
           </span>
-          <h3 class="mt-6 font-display text-2xl font-extrabold uppercase sm:text-3xl">
+          <h3 class="mt-6 font-display text-xl font-extrabold uppercase sm:text-2xl lg:text-3xl">
             Message received.
           </h3>
           <p

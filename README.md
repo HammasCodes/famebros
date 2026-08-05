@@ -164,6 +164,36 @@ an *ancestor* of a transformed node is what makes gradient headlines flicker out
 - The sticky header is opaque, not `backdrop-blur`. A full-width backdrop filter repaints
   everything behind it on every frame of a smooth scroll.
 
+## Social share image
+
+`public/og.png` (1200×630) is what WhatsApp, iMessage, X and LinkedIn show when
+the link is shared. It is committed, so nothing at build or deploy time depends on
+regenerating it.
+
+```bash
+node scripts/generate-og.mjs     # rewrites public/og.png
+```
+
+Regenerate after changing the headline, palette, or wordmark. The script prints
+measured widths and warns if anything overflows the panel.
+
+Two things worth knowing before editing it:
+
+- **Fonts are loaded per-run, not via SVG.** Sharp renders SVG through librsvg,
+  which resolves font families against *system* fonts — Syne is not installed on
+  a build machine, so SVG `<text>` silently falls back to a default face. Sharp's
+  text input accepts `fontfile`, so each run is rendered separately from the TTFs
+  in `scripts/og-fonts/` and composited. Family strings must match the TTF name
+  table (`Syne ExtraBold`, not `Syne-ExtraBold`); a wrong name does not error, it
+  just renders in the wrong font.
+- **Syne ExtraBold is extended** — roughly 0.9em per uppercase character. The
+  headline is three lines for that reason; `WE MAKE BRANDS` on one line measures
+  1712px at 108pt against the 960px the panel allows.
+
+If you change the deployed URL, update `site` in `astro.config.mjs`. It drives
+`canonical`, `og:url`, and the absolute `og:image` URL — scrapers reject relative
+image paths and will fall back to guessing an image off the page body.
+
 ## Verifying a change
 
 ```bash
@@ -171,7 +201,10 @@ npm run build && npm run preview
 ```
 
 - No external origins: `grep -oE 'https?://[a-z.]+' dist/index.html` should return only
-  `famebros.studio` and the social links.
+  the deploy URL and the social links.
+- Share preview: paste the URL into WhatsApp, or use
+  [opengraph.xyz](https://www.opengraph.xyz/). Both Facebook and LinkedIn cache
+  aggressively — force a refresh in their debuggers after changing `og:image`.
 - Fonts self-hosted: `dist/_astro/fonts/` contains `.woff2`.
 - No framework runtime: no `client.*.js` in `dist/_astro/`.
 - Tab the page end to end — focus visible at every stop, `<details>` operable by keyboard.

@@ -15,9 +15,11 @@ const year = new Date().getFullYear();
 <footer class="on-dark border-t-3 border-neo-black bg-neo-black text-neo-offwhite">
   <div class="neo-container py-14 sm:py-16 lg:py-20">
     <div class="flex flex-col gap-12 lg:flex-row lg:justify-between">
-      <div class="max-w-md">
+      <div class="min-w-0 max-w-md">
+        {/* 1.75rem, not text-3xl: at 320px "FAME BROS" measures 295px against
+            280px of gutter, so 30px pushed it onto a third line. */}
         <p
-          class="font-display text-4xl font-extrabold tracking-tight uppercase sm:text-5xl"
+          class="font-display text-[1.75rem] font-extrabold tracking-tight uppercase sm:text-4xl lg:text-5xl"
         >
           Fame Bros<br />
           <span class="text-neo-yellow">Studio</span>
