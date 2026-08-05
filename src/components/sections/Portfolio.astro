@@ -1,0 +1,151 @@
+---
+import { Picture } from 'astro:assets';
+import SectionHeading from '../SectionHeading.astro';
+import NeoTag from '../NeoTag.astro';
+import NeoButton from '../NeoButton.astro';
+
+import cafe from '../../assets/portfolio/brand-shoot-cafe.jpg';
+import fitness from '../../assets/portfolio/reel-series-fitness.jpg';
+import jewellery from '../../assets/portfolio/campaign-jewellery.jpg';
+import streetwear from '../../assets/portfolio/brand-shoot-streetwear.jpg';
+import bakehouse from '../../assets/portfolio/reel-series-bakehouse.jpg';
+import motors from '../../assets/portfolio/campaign-motors.jpg';
+
+/**
+ * PLACEHOLDER CASE STUDIES.
+ *
+ * Client names, categories and result figures below are invented for the demo,
+ * and the imagery is stock. None of it describes real Fame Bros work. Replace
+ * every entry — and the files in src/assets/portfolio/ — before this page is
+ * shown to a prospect as a portfolio.
+ */
+const projects = [
+  {
+    label: 'Brand Shoot 01',
+    client: 'Café Kori',
+    category: 'Brand Shoot',
+    accent: 'purple',
+    result: '2.4M views',
+    image: cafe,
+    alt: 'Brand shoot photography for Café Kori',
+  },
+  {
+    label: 'Reel Series 02',
+    client: 'Nova Fitness',
+    category: 'Reels',
+    accent: 'blue',
+    result: '+180% followers',
+    image: fitness,
+    alt: 'Reel series production for Nova Fitness',
+  },
+  {
+    label: 'Campaign 03',
+    client: 'Aureo Jewellery',
+    category: 'Paid Ads',
+    accent: 'pink',
+    result: '4.1x ROAS',
+    image: jewellery,
+    alt: 'Paid advertising creative for Aureo Jewellery',
+  },
+  {
+    label: 'Brand Shoot 04',
+    client: 'Drift Streetwear',
+    category: 'Brand Shoot',
+    accent: 'yellow',
+    result: '6 lookbooks',
+    image: streetwear,
+    alt: 'Lookbook brand shoot for Drift Streetwear',
+  },
+  {
+    label: 'Reel Series 05',
+    client: 'Sunday Bakehouse',
+    category: 'Reels',
+    accent: 'green',
+    result: '890K reach',
+    image: bakehouse,
+    alt: 'Reel series production for Sunday Bakehouse',
+  },
+  {
+    label: 'Campaign 06',
+    client: 'Peak Motors',
+    category: 'Ads / Video',
+    accent: 'purple',
+    result: '−38% CPA',
+    image: motors,
+    alt: 'Video advertising campaign for Peak Motors',
+  },
+] as const;
+---
+
+<section id="work" class="scroll-mt-24 py-24 lg:py-32">
+  <div class="neo-container">
+    <div data-reveal>
+      <SectionHeading eyebrow="Selected work" index="03" accent="purple">
+        Work That Earns<br />The Scroll
+      </SectionHeading>
+      <p class="mt-6 max-w-2xl text-lg leading-relaxed text-neo-black/70">
+        Shoots, reel series, and campaigns delivered over the last twelve months.
+      </p>
+    </div>
+
+    <div
+      data-reveal-grid
+      class="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8"
+    >
+      {
+        projects.map((project) => (
+          <article class="neo-press group overflow-hidden rounded-neo border-3 border-neo-black bg-neo-offwhite shadow-neo">
+            <div class="relative overflow-hidden border-b-3 border-neo-black">
+              <Picture
+                src={project.image}
+                alt={project.alt}
+                formats={['avif', 'webp']}
+                widths={[400, 800]}
+                sizes="(min-width: 1024px) 30vw, (min-width: 640px) 45vw, 92vw"
+                /* Every one of these sits well below the fold — the section is
+                   fourth on the page. Eager-loading any of them would put six
+                   image requests in competition with the hero's LCP. */
+                loading="lazy"
+                decoding="async"
+                class="aspect-4/5 w-full object-cover transition-transform duration-300 ease-out group-hover:scale-105"
+              />
+              <span class="absolute top-4 left-4">
+                <NeoTag color={project.accent} class="shadow-neo-sm">
+                  {project.category}
+                </NeoTag>
+              </span>
+            </div>
+
+            <div class="flex flex-col gap-3 p-6">
+              <p class="font-mono text-xs font-bold tracking-widest text-neo-black/40 uppercase">
+                {project.label}
+              </p>
+              <h3 class="font-display text-2xl font-extrabold uppercase">
+                {project.client}
+              </h3>
+              <p class="mt-1 inline-flex items-center gap-2 font-mono text-sm font-bold">
+                <svg
+                  class="size-4 shrink-0"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="3"
+                  stroke-linecap="square"
+                  aria-hidden="true"
+                >
+                  <path d="M3 17 9 11l4 4 8-8" />
+                  <path d="M17 7h4v4" />
+                </svg>
+                {project.result}
+              </p>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+
+    <div data-reveal class="mt-14 flex justify-center">
+      <NeoButton href="#book" variant="purple">Start a Project</NeoButton>
+    </div>
+  </div>
+</section>

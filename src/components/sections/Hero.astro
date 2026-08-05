@@ -1,0 +1,135 @@
+---
+import NeoButton from '../NeoButton.astro';
+import NeoTag from '../NeoTag.astro';
+import Marquee from '../Marquee.astro';
+
+const marqueeItems = [
+  'Sony A7S III',
+  'Viral Reels',
+  'Meta Ads',
+  'Brand Shoots',
+  'Content Strategy',
+  'Google Ads',
+  'Community Management',
+  'Creator Collabs',
+];
+
+/**
+ * The headline is split into lines in the markup rather than by a runtime text
+ * splitter. Three consequences worth having: no SplitText payload, no layout
+ * thrash on first paint, and the full sentence stays in the HTML for crawlers
+ * and screen readers.
+ *
+ * The gradient lives on the line element — the same element GSAP transforms.
+ * Putting background-clip: text on an ancestor of a transformed node is what
+ * makes gradient headlines blink out mid-animation in some browsers.
+ */
+const lines = ['We Make', 'Brands', 'Go Viral.'];
+---
+
+{/* No overflow-hidden here: the poster panel's offset shadow and its corner
+    confetti deliberately sit outside the panel box, and clipping the section
+    would shave them off. */}
+<section id="top" class="relative scroll-mt-24 pt-10 lg:pt-14">
+  {/* Dotted ground plane — pure CSS, no image request. */}
+  <div
+    class="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(var(--color-neo-black)_1.5px,transparent_1.5px)] bg-[length:28px_28px] opacity-[0.07]"
+    aria-hidden="true"
+  >
+  </div>
+
+  <div class="neo-container">
+    <div
+      class="on-dark relative rounded-neo border-4 border-neo-black bg-neo-black px-6 py-14 shadow-neo-lg sm:px-10 sm:py-20 lg:px-16 lg:py-24"
+    >
+      {/* Corner confetti. Decorative only, hidden from assistive tech. */}
+      <span
+        class="absolute -top-4 -right-3 hidden size-10 rotate-12 rounded-neo-sm border-3 border-neo-black bg-neo-pink sm:block"
+        aria-hidden="true"></span>
+      <span
+        class="absolute -bottom-4 -left-3 hidden size-8 -rotate-6 rounded-neo-sm border-3 border-neo-black bg-neo-green sm:block"
+        aria-hidden="true"></span>
+
+      <div data-hero-item>
+        <NeoTag color="yellow" class="-rotate-2 shadow-neo-sm">
+          Mumbai · Social Media Studio
+        </NeoTag>
+      </div>
+
+      <h1 class="mt-8 font-display text-hero font-extrabold uppercase">
+        {
+          lines.map((line) => (
+            <span
+              data-hero-line
+              class="block bg-gradient-to-r from-neo-blue to-neo-purple bg-clip-text text-transparent"
+            >
+              {line}
+            </span>
+          ))
+        }
+      </h1>
+
+      <p
+        data-hero-item
+        class="mt-8 max-w-2xl text-lg leading-relaxed text-neo-offwhite/80 sm:text-xl"
+      >
+        Social Media Marketing &amp; Content Creation that actually slaps. Reels,
+        Brand Shoots, &amp; Ads.
+      </p>
+
+      <div data-hero-item class="mt-10 flex flex-wrap items-center gap-4">
+        <NeoButton href="#book" variant="yellow">Book a Shoot</NeoButton>
+        <NeoButton href="#work" variant="ghost-dark">See Our Work</NeoButton>
+      </div>
+
+      {/* flex-col-reverse on each cell puts the figure above its label visually
+          while keeping <dt> before <dd> in the DOM, which is what the spec
+          requires and what assistive tech pairs on. */}
+      <dl
+        data-hero-item
+        class="mt-14 flex flex-wrap gap-x-10 gap-y-6 border-t-2 border-neo-offwhite/20 pt-8"
+      >
+        {
+          [
+            ['50+', 'Accounts managed'],
+            ['10M+', 'Views generated'],
+            ['24h', 'Average reply time'],
+          ].map(([value, label]) => (
+            <div class="flex flex-col-reverse">
+              <dt class="mt-1 font-mono text-xs tracking-widest text-neo-offwhite/60 uppercase">
+                {label}
+              </dt>
+              <dd class="font-display text-3xl font-extrabold text-neo-yellow">
+                {value}
+              </dd>
+            </div>
+          ))
+        }
+      </dl>
+    </div>
+  </div>
+
+  <Marquee items={marqueeItems} color="yellow" class="mt-12 lg:mt-16" />
+</section>
+
+<script>
+  import { gsap, onMotionAllowed } from '../../scripts/motion';
+
+  onMotionAllowed(() => {
+    const timeline = gsap.timeline({ defaults: { ease: 'expo.out' } });
+
+    timeline
+      .from('[data-hero-line]', {
+        yPercent: 60,
+        opacity: 0,
+        rotateX: -35,
+        duration: 0.9,
+        stagger: 0.09,
+      })
+      .from(
+        '[data-hero-item]',
+        { y: 24, opacity: 0, duration: 0.7, stagger: 0.08 },
+        '-=0.5',
+      );
+  });
+</script>

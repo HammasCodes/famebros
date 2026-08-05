@@ -1,0 +1,121 @@
+---
+import { SOCIALS, CONTACT } from '../data/site';
+
+const links = [
+  { label: 'Work', href: '#work' },
+  { label: 'Services', href: '#services' },
+  { label: 'About', href: '#about' },
+  { label: 'FAQ', href: '#faq' },
+  { label: 'Book a Shoot', href: '#book' },
+];
+
+const year = new Date().getFullYear();
+---
+
+<footer class="on-dark border-t-3 border-neo-black bg-neo-black text-neo-offwhite">
+  <div class="neo-container py-16 lg:py-20">
+    <div class="flex flex-col gap-12 lg:flex-row lg:justify-between">
+      <div class="max-w-md">
+        <p
+          class="font-display text-4xl font-extrabold tracking-tight uppercase sm:text-5xl"
+        >
+          Fame Bros<br />
+          <span class="text-neo-yellow">Studio</span>
+        </p>
+        <p class="mt-5 text-base leading-relaxed text-neo-offwhite/70">
+          Social media marketing and content production out of Mumbai. Strategy,
+          shoot, edit, publish, scale.
+        </p>
+      </div>
+
+      <div class="flex flex-col gap-10 sm:flex-row sm:gap-16">
+        <nav aria-label="Footer">
+          <h2
+            class="font-mono text-xs font-bold tracking-[0.2em] text-neo-offwhite/50 uppercase"
+          >
+            Navigate
+          </h2>
+          <ul class="mt-4 flex flex-col gap-1">
+            {
+              links.map((link) => (
+                <li>
+                  <a
+                    href={link.href}
+                    class="inline-flex min-h-11 items-center text-base font-medium text-neo-offwhite/80 transition-colors duration-150 hover:text-neo-yellow"
+                  >
+                    {link.label}
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </nav>
+
+        <div>
+          <h2
+            class="font-mono text-xs font-bold tracking-[0.2em] text-neo-offwhite/50 uppercase"
+          >
+            Contact
+          </h2>
+          <ul class="mt-4 flex flex-col gap-1">
+            <li>
+              <a
+                href={`mailto:${CONTACT.email}`}
+                class="inline-flex min-h-11 items-center text-base font-medium text-neo-offwhite/80 transition-colors duration-150 hover:text-neo-yellow"
+                >{CONTACT.email}</a
+              >
+            </li>
+            <li>
+              <a
+                href={CONTACT.whatsappUrl}
+                class="inline-flex min-h-11 items-center text-base font-medium text-neo-offwhite/80 transition-colors duration-150 hover:text-neo-yellow"
+                >{CONTACT.phone}</a
+              >
+            </li>
+            <li
+              class="inline-flex min-h-11 items-center text-base font-medium text-neo-offwhite/60"
+            >
+              {CONTACT.location}
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="mt-14 flex flex-col-reverse gap-6 border-t-2 border-neo-offwhite/20 pt-8 sm:flex-row sm:items-center sm:justify-between"
+    >
+      <p class="font-mono text-xs tracking-wider text-neo-offwhite/50 uppercase">
+        © {year} Fame Bros Studio. All rights reserved.
+      </p>
+
+      <ul class="flex items-center gap-3">
+        {
+          SOCIALS.map((social) => (
+            <li>
+              <a
+                href={social.href}
+                rel="noopener noreferrer"
+                target="_blank"
+                class="neo-press inline-grid size-11 place-items-center rounded-neo-sm border-2 border-neo-offwhite text-neo-offwhite shadow-neo-dark-sm hover:bg-neo-offwhite hover:text-neo-black"
+              >
+                <span class="sr-only">{social.label}</span>
+                <svg
+                  class="size-5"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                  set:html={social.icon}
+                />
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+</footer>

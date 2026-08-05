@@ -1,0 +1,29 @@
+---
+/** Monospace pill. Used for credential tags, category chips and result chips. */
+interface Props {
+  color?: 'yellow' | 'green' | 'blue' | 'purple' | 'pink' | 'offwhite' | 'black';
+  class?: string;
+}
+
+const { color = 'yellow', class: className = '' } = Astro.props;
+
+const colors = {
+  yellow: 'border-neo-black bg-neo-yellow text-neo-black',
+  green: 'border-neo-black bg-neo-green text-neo-black',
+  blue: 'border-neo-black bg-neo-blue text-neo-black',
+  purple: 'border-neo-black bg-neo-purple text-neo-black',
+  pink: 'border-neo-black bg-neo-pink text-neo-black',
+  offwhite: 'border-neo-black bg-neo-offwhite text-neo-black',
+  black: 'border-neo-offwhite bg-neo-black text-neo-offwhite',
+} as const;
+---
+
+<span
+  class:list={[
+    'inline-flex items-center gap-1.5 rounded-full border-2 px-4 py-1.5 font-mono text-xs font-bold tracking-wider uppercase',
+    colors[color],
+    className,
+  ]}
+>
+  <slot />
+</span>

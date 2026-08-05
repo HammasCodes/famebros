@@ -1,0 +1,60 @@
+---
+/**
+ * The one button in the system. Renders an <a> when given `href`, a <button>
+ * otherwise, and owns the physical-press interaction so no caller has to
+ * remember it.
+ *
+ * Variant class strings are written out in full rather than composed at
+ * runtime — Tailwind scans source as plain text, so `bg-neo-${color}` would
+ * compile to nothing.
+ */
+interface Props {
+  href?: string;
+  type?: 'button' | 'submit';
+  variant?: 'yellow' | 'green' | 'blue' | 'purple' | 'pink' | 'black' | 'ghost-dark';
+  size?: 'md' | 'sm';
+  class?: string;
+  [key: string]: unknown;
+}
+
+const {
+  href,
+  type = 'button',
+  variant = 'yellow',
+  size = 'md',
+  class: className = '',
+  ...rest
+} = Astro.props;
+
+const base =
+  'neo-press inline-flex cursor-pointer items-center justify-center gap-2 rounded-neo-sm border-3 text-center font-mono text-sm font-bold tracking-wider uppercase';
+
+const variants = {
+  yellow: 'border-neo-black bg-neo-yellow text-neo-black shadow-neo',
+  green: 'border-neo-black bg-neo-green text-neo-black shadow-neo',
+  blue: 'border-neo-black bg-neo-blue text-neo-black shadow-neo',
+  purple: 'border-neo-black bg-neo-purple text-neo-black shadow-neo',
+  pink: 'border-neo-black bg-neo-pink text-neo-black shadow-neo',
+  black: 'border-neo-black bg-neo-black text-neo-offwhite shadow-neo',
+  // For placement on neo-black surfaces, where a black ring would vanish.
+  'ghost-dark':
+    'on-dark border-neo-offwhite bg-transparent text-neo-offwhite shadow-neo-dark hover:bg-neo-offwhite hover:text-neo-black',
+} as const;
+
+// min-h keeps every button at or above the 44px touch target, at both sizes.
+const sizes = {
+  md: 'min-h-[3.25rem] px-7 py-4',
+  sm: 'min-h-[2.75rem] px-5 py-3',
+} as const;
+
+const classes = [base, variants[variant], sizes[size], className].join(' ');
+const Tag = href ? 'a' : 'button';
+---
+
+<Tag
+  class={classes}
+  {...href ? { href } : { type }}
+  {...rest}
+>
+  <slot />
+</Tag>

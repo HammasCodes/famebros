@@ -1,0 +1,131 @@
+---
+import NeoButton from './NeoButton.astro';
+
+const links = [
+  { label: 'Work', href: '#work' },
+  { label: 'Services', href: '#services' },
+  { label: 'About', href: '#about' },
+  { label: 'FAQ', href: '#faq' },
+];
+---
+
+{/* Solid background, not translucent-with-backdrop-blur: a full-width
+    backdrop-filter forces a repaint of everything behind it on every frame of a
+    smooth scroll, which is the most expensive thing on an otherwise cheap page.
+    A hard opaque bar is also more honest to the design language. */}
+<header class="sticky top-0 z-50 border-b-3 border-neo-black bg-neo-offwhite">
+  <nav
+    class="neo-container flex h-[4.75rem] items-center justify-between gap-4"
+    aria-label="Primary"
+  >
+    <a
+      href="#top"
+      class="group flex items-center gap-2 font-display text-lg font-extrabold tracking-tight uppercase sm:text-xl"
+    >
+      <span
+        class="inline-grid size-9 place-items-center rounded-neo-sm border-3 border-neo-black bg-neo-yellow text-base shadow-neo-sm transition-transform duration-150 group-hover:rotate-12"
+        aria-hidden="true">★</span
+      >
+      <span>Fame&nbsp;Bros</span>
+      <span class="font-mono text-xs font-bold text-neo-black/50">/ STUDIO</span>
+    </a>
+
+    <ul class="hidden items-center gap-1 lg:flex">
+      {
+        links.map((link) => (
+          <li>
+            <a
+              href={link.href}
+              class="inline-flex min-h-11 items-center rounded-neo-sm px-4 font-mono text-sm font-bold tracking-wider uppercase transition-colors duration-150 hover:bg-neo-black hover:text-neo-offwhite"
+            >
+              {link.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+
+    <div class="flex items-center gap-2">
+      <NeoButton href="#book" variant="yellow" size="sm" class="hidden sm:inline-flex">
+        Book a Shoot
+      </NeoButton>
+
+      <button
+        type="button"
+        id="nav-toggle"
+        aria-expanded="false"
+        aria-controls="nav-panel"
+        class="neo-press inline-grid size-11 cursor-pointer place-items-center rounded-neo-sm border-3 border-neo-black bg-neo-offwhite shadow-neo-sm lg:hidden"
+      >
+        <span class="sr-only">Open menu</span>
+        <svg
+          class="size-5"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.5"
+          stroke-linecap="square"
+          aria-hidden="true"
+        >
+          <path d="M3 6h18M3 12h18M3 18h18"></path>
+        </svg>
+      </button>
+    </div>
+  </nav>
+
+  <div
+    id="nav-panel"
+    hidden
+    class="border-t-3 border-neo-black bg-neo-offwhite lg:hidden"
+  >
+    <ul class="neo-container flex flex-col gap-2 py-5">
+      {
+        links.map((link) => (
+          <li>
+            <a
+              href={link.href}
+              data-nav-link
+              class="flex min-h-12 items-center rounded-neo-sm border-2 border-neo-black bg-neo-offwhite px-4 font-mono text-sm font-bold tracking-wider uppercase shadow-neo-sm"
+            >
+              {link.label}
+            </a>
+          </li>
+        ))
+      }
+      <li class="sm:hidden">
+        <NeoButton href="#book" variant="yellow" size="sm" class="w-full" data-nav-link>
+          Book a Shoot
+        </NeoButton>
+      </li>
+    </ul>
+  </div>
+</header>
+
+<script>
+  const toggle = document.getElementById('nav-toggle');
+  const panel = document.getElementById('nav-panel');
+
+  if (toggle && panel) {
+    const setOpen = (open: boolean) => {
+      panel.hidden = !open;
+      toggle.setAttribute('aria-expanded', String(open));
+      toggle.querySelector('.sr-only')!.textContent = open ? 'Close menu' : 'Open menu';
+    };
+
+    toggle.addEventListener('click', () =>
+      setOpen(toggle.getAttribute('aria-expanded') !== 'true'),
+    );
+
+    // Close on selection, and on Escape from anywhere in the header.
+    panel.querySelectorAll('[data-nav-link]').forEach((link) =>
+      link.addEventListener('click', () => setOpen(false)),
+    );
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && !panel.hidden) {
+        setOpen(false);
+        toggle.focus();
+      }
+    });
+  }
+</script>

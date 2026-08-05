@@ -1,0 +1,81 @@
+---
+import { Font } from 'astro:assets';
+import '../styles/global.css';
+
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+import SmoothScroll from '../components/SmoothScroll.astro';
+import ScrollReveal from '../components/ScrollReveal.astro';
+
+interface Props {
+  title: string;
+  description: string;
+}
+
+const { title, description } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
+    <meta name="theme-color" content="#0F0F0F" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Fame Bros Studio" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content="en_IN" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+
+    {/*
+      Fonts are downloaded at build time and served from this origin — no
+      fonts.googleapis.com or fonts.gstatic.com round-trip.
+
+      Syne and Space Grotesk are preloaded because they render above the fold;
+      Syne in particular carries the LCP element. Both arrive from Google as
+      single variable files covering every requested weight, so `preload` here
+      emits exactly one <link> each, not one per weight.
+
+      JetBrains Mono is deliberately not preloaded — it only sets small labels
+      and chips, and a third preload would compete with the LCP for bandwidth.
+      font-display: swap covers the gap.
+    */}
+    <Font cssVariable="--font-syne" preload />
+    <Font cssVariable="--font-space-grotesk" preload />
+    <Font cssVariable="--font-jetbrains-mono" />
+  </head>
+
+  <body>
+    <a
+      href="#main"
+      class="sr-only rounded-neo-sm focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-100 focus:border-3 focus:border-neo-black focus:bg-neo-yellow focus:px-5 focus:py-3 focus:font-mono focus:text-sm focus:font-bold focus:uppercase focus:shadow-neo"
+    >
+      Skip to content
+    </a>
+
+    <Navbar />
+
+    <main id="main">
+      <slot />
+    </main>
+
+    <Footer />
+
+    <SmoothScroll />
+    <ScrollReveal />
+  </body>
+</html>

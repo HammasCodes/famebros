@@ -1,0 +1,37 @@
+---
+/**
+ * Lenis ⇄ GSAP wiring. Renders no markup — it exists purely to own the one
+ * place where the two scroll clocks are married together.
+ *
+ * Running Lenis off GSAP's ticker (rather than its own rAF loop) means there is
+ * exactly one requestAnimationFrame callback driving the entire page, and
+ * ScrollTrigger reads a scroll position that is always in sync with the
+ * smoothed value rather than the browser's raw one.
+ */
+---
+
+<script>
+  import Lenis from 'lenis';
+  import { gsap, ScrollTrigger } from '../scripts/motion';
+
+  const lenis = new Lenis({
+    lerp: 0.09,
+    smoothWheel: true,
+    // Anchor navigation runs through Lenis so in-page jumps are smoothed too.
+    // The offset clears the sticky header, which would otherwise cover the
+    // first two lines of whatever section you jumped to.
+    anchors: { offset: -88 },
+    // Lenis handles prefers-reduced-motion itself: lerp is forced to 1 and
+    // programmatic scrolls become instant, so smoothing disappears while
+    // anchor links keep working. Left explicit because it matters.
+    respectReducedMotion: true,
+  });
+
+  lenis.on('scroll', ScrollTrigger.update);
+
+  gsap.ticker.add((time) => lenis.raf(time * 1000));
+  gsap.ticker.lagSmoothing(0);
+
+  // Fonts and images settling after first paint shift every trigger boundary.
+  document.fonts?.ready.then(() => ScrollTrigger.refresh());
+</script>

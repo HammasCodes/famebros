@@ -1,0 +1,220 @@
+---
+import NeoButton from '../NeoButton.astro';
+import { CONTACT } from '../../data/site';
+
+const services = [
+  'Social Media Management',
+  'Viral Reels & Brand Shoots',
+  'Paid Ads (Meta / Google)',
+  'Content Strategy',
+  'Full retainer — all of it',
+];
+
+const fieldClass =
+  'w-full min-h-12 rounded-neo-sm border-3 border-neo-black bg-neo-offwhite px-4 py-3 text-base placeholder:text-neo-black/35 user-invalid:border-neo-red';
+const labelClass =
+  'mb-2 block font-mono text-xs font-bold tracking-wider uppercase';
+
+const details = [
+  { label: 'Email', value: CONTACT.email, href: `mailto:${CONTACT.email}` },
+  { label: 'WhatsApp', value: CONTACT.phone, href: CONTACT.whatsappUrl },
+  { label: 'Studio', value: CONTACT.location, href: null },
+];
+---
+
+<section
+  id="book"
+  class="scroll-mt-24 border-y-4 border-neo-black bg-neo-purple py-24 text-neo-black lg:py-32"
+>
+  <div class="neo-container">
+    <div class="grid gap-12 lg:grid-cols-12 lg:gap-16">
+      <div data-reveal class="lg:col-span-5">
+        <p
+          class="font-mono text-xs font-bold tracking-[0.2em] text-neo-black/60 uppercase"
+        >
+          05 — Book a shoot
+        </p>
+        <h2 class="mt-5 font-display text-section font-extrabold uppercase">
+          Let's Make<br />Something<br />That Slaps.
+        </h2>
+        <p class="mt-6 max-w-md text-lg leading-relaxed text-neo-black/80">
+          Tell us about the brand and what you're trying to grow. We read every
+          message and reply within one working day.
+        </p>
+
+        <dl class="mt-10 flex flex-col gap-5">
+          {
+            details.map((detail) => (
+              <div>
+                <dt class="font-mono text-xs font-bold tracking-widest text-neo-black/50 uppercase">
+                  {detail.label}
+                </dt>
+                <dd class="mt-1 text-lg font-medium">
+                  {detail.href ? (
+                    <a
+                      href={detail.href}
+                      class="inline-flex min-h-11 items-center underline decoration-2 underline-offset-4 transition-opacity duration-150 hover:opacity-60"
+                    >
+                      {detail.value}
+                    </a>
+                  ) : (
+                    <span class="inline-flex min-h-11 items-center">
+                      {detail.value}
+                    </span>
+                  )}
+                </dd>
+              </div>
+            ))
+          }
+        </dl>
+      </div>
+
+      <div data-reveal class="lg:col-span-7">
+        {/*
+          DEMO FORM — NOT CONNECTED.
+
+          Submission is intercepted below and only swaps in the success panel.
+          Nothing is sent, stored, or emailed anywhere. Wire the marked line in
+          the script to a real endpoint (Formspree, Resend, a Supabase edge
+          function) before showing this to anyone who might actually use it.
+        */}
+        <form
+          id="booking-form"
+          class="rounded-neo border-4 border-neo-black bg-neo-offwhite p-7 shadow-neo sm:p-9"
+        >
+          <div class="grid gap-6 sm:grid-cols-2">
+            <div>
+              <label class={labelClass} for="field-name">Your name</label>
+              <input
+                class={fieldClass}
+                id="field-name"
+                name="name"
+                type="text"
+                autocomplete="name"
+                placeholder="Arjun Mehta"
+                required
+              />
+            </div>
+
+            <div>
+              <label class={labelClass} for="field-email">Email</label>
+              <input
+                class={fieldClass}
+                id="field-email"
+                name="email"
+                type="email"
+                autocomplete="email"
+                placeholder="arjun@brand.com"
+                required
+              />
+            </div>
+
+            <div class="sm:col-span-2">
+              <label class={labelClass} for="field-brand">Brand or company</label>
+              <input
+                class={fieldClass}
+                id="field-brand"
+                name="brand"
+                type="text"
+                autocomplete="organization"
+                placeholder="Café Kori"
+              />
+            </div>
+
+            <div class="sm:col-span-2">
+              <label class={labelClass} for="field-service">
+                What do you need?
+              </label>
+              <select class={fieldClass} id="field-service" name="service" required>
+                <option value="" selected disabled>Pick a service</option>
+                {services.map((service) => <option value={service}>{service}</option>)}
+              </select>
+            </div>
+
+            <div class="sm:col-span-2">
+              <label class={labelClass} for="field-message">
+                Tell us about the project
+              </label>
+              <textarea
+                class={`${fieldClass} min-h-32 resize-y`}
+                id="field-message"
+                name="message"
+                rows="4"
+                placeholder="We're launching a new product line in October and need reels plus a brand shoot."
+                required></textarea>
+              <p class="mt-2 font-mono text-xs text-neo-black/50">
+                Budget range and timeline help us reply with something useful.
+              </p>
+            </div>
+          </div>
+
+          <div class="mt-8 flex flex-wrap items-center gap-4">
+            <NeoButton type="submit" variant="yellow">Send Enquiry</NeoButton>
+            <p class="font-mono text-xs text-neo-black/50">
+              No spam. No newsletter. Just a reply.
+            </p>
+          </div>
+        </form>
+
+        <div
+          id="booking-success"
+          hidden
+          tabindex="-1"
+          class="rounded-neo border-4 border-neo-black bg-neo-green p-9 shadow-neo sm:p-12"
+        >
+          <span
+            class="inline-grid size-14 place-items-center rounded-neo-sm border-3 border-neo-black bg-neo-offwhite shadow-neo-sm"
+            aria-hidden="true"
+          >
+            <svg
+              class="size-7"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="3"
+              stroke-linecap="square"
+            >
+              <path d="m5 12 5 5L20 7"></path>
+            </svg>
+          </span>
+          <h3 class="mt-6 font-display text-3xl font-extrabold uppercase">
+            Message received.
+          </h3>
+          <p class="mt-4 max-w-md text-lg leading-relaxed text-neo-black/80">
+            Thanks for reaching out. We'll come back to you within one working
+            day — usually a lot sooner.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const form = document.getElementById('booking-form') as HTMLFormElement | null;
+  const success = document.getElementById('booking-success');
+
+  form?.addEventListener('submit', (event) => {
+    event.preventDefault();
+
+    // Native constraint validation drives the error messaging — no custom
+    // validator to keep in sync with the markup.
+    if (!form.reportValidity()) return;
+
+    // ── Replace this block with a real submission ──────────────────────────
+    // await fetch('https://formspree.io/f/XXXX', {
+    //   method: 'POST',
+    //   headers: { Accept: 'application/json' },
+    //   body: new FormData(form),
+    // });
+    // ──────────────────────────────────────────────────────────────────────
+
+    form.hidden = true;
+    if (success) {
+      success.hidden = false;
+      // Move focus so screen reader and keyboard users land on the outcome
+      // rather than on whatever followed the form they just replaced.
+      success.focus();
+    }
+  });
+</script>

@@ -1,0 +1,66 @@
+---
+/**
+ * Eyebrow + heading pair. The eyebrow carries a section number so the page
+ * reads as a sequence rather than a stack of unrelated bands.
+ */
+interface Props {
+  eyebrow: string;
+  index: string;
+  accent?: 'yellow' | 'green' | 'blue' | 'purple' | 'pink';
+  onDark?: boolean;
+  class?: string;
+}
+
+const {
+  eyebrow,
+  index,
+  accent = 'yellow',
+  onDark = false,
+  class: className = '',
+} = Astro.props;
+
+const accents = {
+  yellow: 'bg-neo-yellow',
+  green: 'bg-neo-green',
+  blue: 'bg-neo-blue',
+  purple: 'bg-neo-purple',
+  pink: 'bg-neo-pink',
+} as const;
+---
+
+<div class:list={['flex flex-col gap-5', className]}>
+  <div class="flex items-center gap-3">
+    <span
+      class:list={[
+        'inline-block rounded-neo-sm border-2 border-neo-black px-3 py-1 font-mono text-xs font-bold tracking-widest text-neo-black',
+        accents[accent],
+      ]}
+    >
+      {index}
+    </span>
+    <span
+      class:list={[
+        'font-mono text-xs font-bold tracking-[0.2em] uppercase',
+        onDark ? 'text-neo-offwhite/70' : 'text-neo-black/60',
+      ]}
+    >
+      {eyebrow}
+    </span>
+    <span
+      class:list={[
+        'h-0.5 flex-1',
+        onDark ? 'bg-neo-offwhite/30' : 'bg-neo-black/20',
+      ]}
+      aria-hidden="true"
+    ></span>
+  </div>
+
+  <h2
+    class:list={[
+      'text-section max-w-4xl font-display font-extrabold uppercase',
+      onDark ? 'text-neo-offwhite' : 'text-neo-black',
+    ]}
+  >
+    <slot />
+  </h2>
+</div>

@@ -1,0 +1,68 @@
+---
+/**
+ * Each figure is server-rendered at its final value, so the section is correct
+ * before — and without — JavaScript. The counter tween only overwrites that
+ * text once its trigger fires.
+ */
+const stats = [
+  { to: 50, suffix: '+', label: 'Active Accounts', color: 'text-neo-yellow' },
+  { to: 10, suffix: 'M+', label: 'Views Generated', color: 'text-neo-green' },
+  { to: 5, suffix: '+', label: 'Years Experience', color: 'text-neo-blue' },
+];
+---
+
+<section
+  class="on-dark border-y-4 border-neo-black bg-neo-black py-20 text-neo-offwhite lg:py-24"
+>
+  <div class="neo-container">
+    <p
+      class="text-center font-mono text-xs font-bold tracking-[0.25em] text-neo-offwhite/50 uppercase"
+    >
+      By the numbers
+    </p>
+
+    {/* flex-col-reverse on each cell keeps <dt> ahead of <dd> in the DOM, as the
+        spec requires, while the figure still reads above its label. */}
+    <dl data-reveal-grid class="mt-12 grid gap-6 sm:grid-cols-3 lg:gap-8">
+      {
+        stats.map((stat) => (
+          <div class="flex flex-col-reverse rounded-neo border-3 border-neo-offwhite p-8 text-center shadow-neo-dark">
+            <dt class="mt-3 font-mono text-xs font-bold tracking-[0.2em] text-neo-offwhite/70 uppercase">
+              {stat.label}
+            </dt>
+            <dd
+              data-count-to={stat.to}
+              data-count-suffix={stat.suffix}
+              class={`font-display text-stat font-extrabold tabular-nums ${stat.color}`}
+            >
+              {stat.to}
+              {stat.suffix}
+            </dd>
+          </div>
+        ))
+      }
+    </dl>
+  </div>
+</section>
+
+<script>
+  import { gsap, onMotionAllowed } from '../../scripts/motion';
+
+  onMotionAllowed(() => {
+    gsap.utils.toArray<HTMLElement>('[data-count-to]').forEach((element) => {
+      const target = Number(element.dataset.countTo);
+      const suffix = element.dataset.countSuffix ?? '';
+      const counter = { value: 0 };
+
+      gsap.to(counter, {
+        value: target,
+        duration: 1.8,
+        ease: 'power2.out',
+        scrollTrigger: { trigger: element, start: 'top 85%', once: true },
+        onUpdate() {
+          element.textContent = `${Math.round(counter.value)}${suffix}`;
+        },
+      });
+    });
+  });
+</script>

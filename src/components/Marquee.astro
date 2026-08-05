@@ -1,0 +1,61 @@
+---
+/**
+ * Scrolling ticker. Pure CSS — no JS, no ScrollTrigger, no measurement.
+ *
+ * The track holds four copies of the list and translates by -50%, so the loop
+ * point lands on an identical frame. Four rather than two: at -50% the visible
+ * window sits in the back half of the track, so that half alone has to be wider
+ * than the viewport. Two copies of an eight-item list is ~1600px, which leaves
+ * a visible gap on a 2560px display right as the loop resets.
+ *
+ * Copies after the first are aria-hidden, and the fixed vertical padding means
+ * the band cannot shift layout while the font is still loading.
+ */
+interface Props {
+  items: string[];
+  color?: 'yellow' | 'green' | 'blue' | 'purple' | 'pink' | 'black';
+  duration?: string;
+  class?: string;
+}
+
+const {
+  items,
+  color = 'yellow',
+  duration = '42s',
+  class: className = '',
+} = Astro.props;
+
+const colors = {
+  yellow: 'bg-neo-yellow text-neo-black border-neo-black',
+  green: 'bg-neo-green text-neo-black border-neo-black',
+  blue: 'bg-neo-blue text-neo-black border-neo-black',
+  purple: 'bg-neo-purple text-neo-black border-neo-black',
+  pink: 'bg-neo-pink text-neo-black border-neo-black',
+  black: 'bg-neo-black text-neo-offwhite border-neo-offwhite',
+} as const;
+---
+
+<div
+  class:list={['overflow-hidden border-y-3 py-4', colors[color], className]}
+>
+  <div
+    class="flex w-max animate-marquee motion-reduce:animate-none"
+    style={`animation-duration:${duration}`}
+  >
+    {
+      [0, 1, 2, 3].map((copy) => (
+        <ul
+          class="flex shrink-0 items-center"
+          aria-hidden={copy > 0 ? 'true' : undefined}
+        >
+          {items.map((item) => (
+            <li class="flex shrink-0 items-center gap-8 px-4 font-mono text-sm font-bold tracking-widest uppercase sm:text-base">
+              <span>{item}</span>
+              <span aria-hidden="true">★</span>
+            </li>
+          ))}
+        </ul>
+      ))
+    }
+  </div>
+</div>

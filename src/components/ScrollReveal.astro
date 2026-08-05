@@ -1,0 +1,50 @@
+---
+/**
+ * Page-wide scroll reveal. Renders no markup — sections opt in by putting
+ * `data-reveal` (sequential) or `data-reveal-grid` (wave stagger) on a
+ * container, and its direct children animate in.
+ *
+ * Centralised so there is one ScrollTrigger configuration to reason about
+ * rather than seven near-identical copies drifting apart over time.
+ *
+ * Everything is a `gsap.from()`, so the un-animated page is the finished page.
+ */
+---
+
+<script>
+  import { gsap, onMotionAllowed } from '../scripts/motion';
+
+  onMotionAllowed(() => {
+    const reveal = (
+      selector: string,
+      vars: gsap.TweenVars,
+      stagger: gsap.TweenVars['stagger'],
+    ) => {
+      gsap.utils.toArray<HTMLElement>(selector).forEach((container) => {
+        gsap.from(container.children, {
+          ...vars,
+          stagger,
+          scrollTrigger: {
+            trigger: container,
+            start: 'top 85%',
+            // Content stays put once revealed — replaying on every scroll
+            // reversal turns a page skim into a strobe.
+            once: true,
+          },
+        });
+      });
+    };
+
+    reveal(
+      '[data-reveal]',
+      { opacity: 0, y: 24, duration: 0.55, ease: 'power2.out' },
+      0.08,
+    );
+
+    reveal(
+      '[data-reveal-grid]',
+      { opacity: 0, y: 20, scale: 0.96, duration: 0.5, ease: 'back.out(1.4)' },
+      { each: 0.06, grid: 'auto', from: 'start' },
+    );
+  });
+</script>

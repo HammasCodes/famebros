@@ -1,0 +1,94 @@
+---
+import SectionHeading from '../SectionHeading.astro';
+import NeoButton from '../NeoButton.astro';
+
+/**
+ * Native <details>/<summary>. No JavaScript, no ARIA to keep in sync, correct
+ * keyboard and screen-reader behaviour by default, and the answers stay in the
+ * document for search engines.
+ */
+const faqs = [
+  {
+    question: 'Do you shoot on location?',
+    answer:
+      'Yes. We shoot on location across Mumbai and travel anywhere in India for multi-day brand shoots. Studio bookings are arranged when a controlled setup makes more sense for the product.',
+  },
+  {
+    question: 'How do you measure ROI?',
+    answer:
+      'We track the metrics tied to revenue rather than vanity: qualified enquiries, cost per result, saves and shares, and profile-to-website click-through. You get a monthly report with the numbers and, more importantly, what we are changing next month because of them.',
+  },
+  {
+    question: "What's your turnaround on reels?",
+    answer:
+      'Five to seven working days from shoot to delivery is standard. Retainer clients run on a rolling pipeline instead, so there is always finished content in the queue and nothing depends on a single shoot day.',
+  },
+  {
+    question: 'Do you work with brands outside Mumbai?',
+    answer:
+      'Regularly. Roughly half our retainers are remote — we run strategy and paid media from here, then either fly out for shoot days or direct the shoot with a vetted local crew.',
+  },
+  {
+    question: 'What does a typical engagement look like?',
+    answer:
+      'Most brands start with a one-month pilot: account audit, strategy, one shoot day, and a first content drop. If the pilot performs, we move to a monthly retainer covering management, content production, and paid distribution.',
+  },
+  {
+    question: 'Who owns the content you produce?',
+    answer:
+      'You do. Every raw file, edit, and final asset is handed over on delivery, with no ongoing licence. We only ask permission to feature the work in our own portfolio.',
+  },
+];
+---
+
+<section id="faq" class="scroll-mt-24 py-24 lg:py-32">
+  <div class="neo-container">
+    <div class="grid gap-12 lg:grid-cols-12 lg:gap-16">
+      <div class="lg:col-span-5">
+        <div data-reveal class="lg:sticky lg:top-28">
+          <SectionHeading eyebrow="Questions" index="04" accent="purple">
+            Everything<br />You'd Ask
+          </SectionHeading>
+          <p class="mt-6 text-lg leading-relaxed text-neo-black/70">
+            If something isn't covered here, ask us directly. We answer within one
+            working day.
+          </p>
+          <NeoButton href="#book" variant="purple" size="sm" class="mt-8">
+            Ask a Question
+          </NeoButton>
+        </div>
+      </div>
+
+      <div data-reveal class="flex flex-col gap-4 lg:col-span-7">
+        {
+          faqs.map((faq) => (
+            <details class="group rounded-neo border-3 border-neo-black bg-neo-offwhite shadow-neo">
+              <summary class="flex min-h-16 cursor-pointer items-center justify-between gap-5 rounded-neo px-6 py-5 font-display text-lg font-bold uppercase transition-colors duration-150 group-open:rounded-b-none group-open:bg-neo-purple sm:text-xl">
+                {faq.question}
+                <span
+                  class="inline-grid size-8 shrink-0 place-items-center rounded-neo-sm border-2 border-neo-black bg-neo-offwhite transition-transform duration-200 group-open:rotate-45"
+                  aria-hidden="true"
+                >
+                  <svg
+                    class="size-4"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="3.5"
+                    stroke-linecap="square"
+                  >
+                    <path d="M12 5v14M5 12h14" />
+                  </svg>
+                </span>
+              </summary>
+
+              <div class="border-t-2 border-neo-black/15 px-6 pt-5 pb-6">
+                <p class="leading-relaxed text-neo-black/80">{faq.answer}</p>
+              </div>
+            </details>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</section>

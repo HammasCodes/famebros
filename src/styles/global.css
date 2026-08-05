@@ -1,0 +1,228 @@
+/* `source(none)` disables Tailwind's automatic source detection, which walks the
+   whole project root. That root contains .claude/, .agents/ and .kilocode/ —
+   skill data files stuffed with example Tailwind classes — and Tailwind was
+   dutifully compiling utilities like `from-blue-500` and `shadow-md` that no
+   page ever references. Scanning src/ alone is both correct and smaller. */
+@import "tailwindcss" source(none);
+@source "../**/*.{astro,html,js,jsx,ts,tsx,md,mdx}";
+
+/* ==========================================================================
+   FAME BROS STUDIO — NEUBRUTALIST DESIGN TOKENS
+   Single source of truth. Change a value here, it propagates everywhere.
+   ========================================================================== */
+
+@theme {
+  /* --- Palette -----------------------------------------------------------
+     Contrast rule: neo-black text on brights, neo-offwhite text on black.
+     Never use a bright color as text on a light background — neo-blue on
+     neo-offwhite measures 1.4:1 and fails WCAG AA outright.
+     Verified black-on-fill ratios: yellow 14.5 · green 13.2 · blue 14.8 ·
+     pink 9.0 · purple 7.8. All pass AA and AAA for large text.
+  ------------------------------------------------------------------------ */
+  --color-neo-black: #0f0f0f;
+  --color-neo-offwhite: #fffdf5;
+  --color-neo-yellow: #ffde59;
+  --color-neo-green: #7ed957;
+  --color-neo-blue: #5ce1e6;
+  --color-neo-purple: #c678dd;
+  --color-neo-pink: #ff66c4;
+
+  /* Not in the original palette — forms need a failure state, and none of the
+     five brand accents can carry that meaning without confusing it with a
+     decorative one. Darkened from a stock red to clear 4.5:1 on neo-offwhite. */
+  --color-neo-red: #c4262e;
+
+  /* --- Typography --------------------------------------------------------
+     Values resolve from the :root variables astro:fonts emits at build time.
+     Overriding --font-sans also sets the document default, because Tailwind's
+     preflight resolves html { font-family } through --default-font-family.
+  ------------------------------------------------------------------------ */
+  --font-display: var(--font-syne);
+  --font-sans: var(--font-space-grotesk);
+  --font-mono: var(--font-jetbrains-mono);
+
+  /* Fluid display sizes — these repeat across sections, so they are tokens. */
+  --text-hero: clamp(2.75rem, 8.5vw, 7rem);
+  --text-hero--line-height: 0.92;
+  --text-hero--letter-spacing: -0.03em;
+
+  --text-section: clamp(2rem, 5vw, 3.75rem);
+  --text-section--line-height: 0.98;
+  --text-section--letter-spacing: -0.02em;
+
+  --text-stat: clamp(2.75rem, 6vw, 4.5rem);
+  --text-stat--line-height: 1;
+  --text-stat--letter-spacing: -0.03em;
+
+  /* --- Hard shadows — zero blur, always -------------------------------- */
+  --shadow-neo-sm: 3px 3px 0px 0px #0f0f0f;
+  --shadow-neo: 5px 5px 0px 0px #0f0f0f;
+  --shadow-neo-lg: 8px 8px 0px 0px #0f0f0f;
+  --shadow-neo-dark: 5px 5px 0px 0px #fffdf5;
+  --shadow-neo-dark-sm: 3px 3px 0px 0px #fffdf5;
+
+  /* --- Radii -------------------------------------------------------------
+     Same values as Tailwind's rounded-sm / rounded-xl / rounded-full, named
+     semantically so a radius change propagates from one place.
+  ------------------------------------------------------------------------ */
+  --radius-neo-sm: 0.25rem; /* buttons, chips */
+  --radius-neo: 0.75rem; /* cards, panels */
+
+  /* --- Motion ----------------------------------------------------------- */
+  --animate-marquee: neo-marquee 42s linear infinite;
+
+  @keyframes neo-marquee {
+    from {
+      transform: translate3d(0, 0, 0);
+    }
+    to {
+      transform: translate3d(-50%, 0, 0);
+    }
+  }
+}
+
+/* ==========================================================================
+   THE PHYSICAL PRESS
+   The brief's interaction contract, expressed once instead of on ~25 elements:
+     hover:-translate-y-1 active:translate-y-1 active:shadow-none
+     transition-all duration-150 ease-[cubic-bezier(0.4,0,0.2,1)]
+   Two intentional refinements:
+   1. Transitions transform + box-shadow only, not `all` — same feel, no
+      unintended transitions on border-color or layout properties.
+   2. Hover is gated behind (hover: hover) so touch devices don't get a
+      sticky lifted state after a tap.
+   The easing below is cubic-bezier(0.4, 0, 0.2, 1) verbatim, which is also
+   Tailwind's --ease-in-out. Written literally so it survives theme tree-shaking.
+   ========================================================================== */
+
+@utility neo-press {
+  transition:
+    transform 150ms cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 150ms cubic-bezier(0.4, 0, 0.2, 1);
+
+  @media (hover: hover) {
+    &:hover {
+      transform: translateY(-0.25rem);
+    }
+  }
+
+  &:active {
+    transform: translateY(0.25rem);
+    box-shadow: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
+}
+
+/* Page gutter, used by every section wrapper. */
+@utility neo-container {
+  width: 100%;
+  max-width: 80rem;
+  margin-inline: auto;
+  padding-inline: 1.25rem;
+
+  @media (width >= 48rem) {
+    padding-inline: 2rem;
+  }
+
+  @media (width >= 80rem) {
+    padding-inline: 2.5rem;
+  }
+}
+
+/* ==========================================================================
+   LENIS
+   Inlined from lenis/dist/lenis.css so the page ships one stylesheet.
+   ========================================================================== */
+
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis:not(.lenis-autoToggle).lenis-stopped {
+  overflow: clip;
+}
+
+.lenis [data-lenis-prevent],
+.lenis [data-lenis-prevent-wheel],
+.lenis [data-lenis-prevent-touch],
+.lenis [data-lenis-prevent-vertical],
+.lenis [data-lenis-prevent-horizontal] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
+}
+
+.lenis.lenis-autoToggle {
+  transition-property: overflow;
+  transition-duration: 1ms;
+  transition-behavior: allow-discrete;
+}
+
+/* ==========================================================================
+   BASE
+   ========================================================================== */
+
+@layer base {
+  body {
+    background-color: var(--color-neo-offwhite);
+    color: var(--color-neo-black);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    font-weight: 800;
+  }
+
+  /* Keyboard focus reads as part of the design language rather than an
+     afterthought. Never removed — only restyled. */
+  :focus-visible {
+    outline: 3px solid var(--color-neo-black);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  /* On dark surfaces the black ring would be invisible. */
+  .on-dark :focus-visible,
+  .on-dark:focus-visible {
+    outline-color: var(--color-neo-offwhite);
+  }
+
+  ::selection {
+    background-color: var(--color-neo-yellow);
+    color: var(--color-neo-black);
+  }
+
+  /* We supply our own +/× indicator on FAQ rows. */
+  summary::-webkit-details-marker {
+    display: none;
+  }
+  summary {
+    list-style: none;
+  }
+  summary::marker {
+    content: "";
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://famebros.studio/sitemap-index.xml

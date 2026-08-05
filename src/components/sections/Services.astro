@@ -1,0 +1,141 @@
+---
+import SectionHeading from '../SectionHeading.astro';
+
+/** Accent rotates yellow → green → blue → pink across the four cards. */
+const accents = {
+  yellow: 'bg-neo-yellow',
+  green: 'bg-neo-green',
+  blue: 'bg-neo-blue',
+  pink: 'bg-neo-pink',
+} as const;
+
+const services = [
+  {
+    index: '01',
+    accent: 'yellow',
+    title: 'Social Media Management',
+    body: 'We run the account end to end — daily publishing, community management, and a calendar that comes out of a strategy rather than a spreadsheet.',
+    deliverables: [
+      'Content calendar',
+      'Copywriting',
+      'Community replies',
+      'Monthly reporting',
+    ],
+    // Lucide: message-circle-more
+    icon: '<path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/><path d="M8 12h.01"/><path d="M12 12h.01"/><path d="M16 12h.01"/>',
+  },
+  {
+    index: '02',
+    accent: 'green',
+    title: 'Viral Reels & Brand Shoots',
+    body: 'Shot on Sony A7S III. Hooks written for retention, edits cut for the algorithm, and product stills that do not look like everyone else’s.',
+    deliverables: [
+      'Reel packs',
+      'Product & brand stills',
+      'On-location shoots',
+      'Post-production',
+    ],
+    // Lucide: video
+    icon: '<path d="m22 8-6 4 6 4V8Z"/><rect width="14" height="12" x="2" y="6" rx="2"/>',
+  },
+  {
+    index: '03',
+    accent: 'blue',
+    title: 'Paid Ads (Meta / Google)',
+    body: 'Creative-led performance campaigns. We build the creative, run the tests, and scale what converts — not what looks good in a deck.',
+    deliverables: [
+      'Campaign setup',
+      'Creative testing',
+      'Pixel & tracking',
+      'Weekly optimisation',
+    ],
+    // Lucide: target
+    icon: '<circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/>',
+  },
+  {
+    index: '04',
+    accent: 'pink',
+    title: 'Content Strategy',
+    body: 'Positioning, pillars, and a 90-day roadmap. We audit what you have, find the gap, and hand over a system your team can actually run.',
+    deliverables: [
+      'Account audit',
+      'Content pillars',
+      'Hook library',
+      '90-day roadmap',
+    ],
+    // Lucide: compass
+    icon: '<circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/>',
+  },
+] as const;
+---
+
+<section id="services" class="scroll-mt-24 py-24 lg:py-32">
+  <div class="neo-container">
+    <div data-reveal>
+      <SectionHeading eyebrow="What we do" index="02" accent="yellow">
+        Four Ways We<br />Grow Your Brand
+      </SectionHeading>
+      <p class="mt-6 max-w-2xl text-lg leading-relaxed text-neo-black/70">
+        Take one, or take the whole stack. Most brands start with content and add
+        paid once the creative is proven.
+      </p>
+    </div>
+
+    <div data-reveal-grid class="mt-14 grid gap-6 sm:grid-cols-2 lg:gap-8">
+      {
+        services.map((service) => (
+          <article class="neo-press group flex flex-col rounded-neo border-3 border-neo-black bg-neo-offwhite p-7 shadow-neo lg:p-9">
+            <div class="flex items-start justify-between gap-4">
+              <span
+                class={`inline-grid size-14 shrink-0 place-items-center rounded-neo-sm border-3 border-neo-black text-neo-black shadow-neo-sm transition-transform duration-150 group-hover:scale-105 ${accents[service.accent]}`}
+                aria-hidden="true"
+              >
+                <svg
+                  class="size-7"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  set:html={service.icon}
+                />
+              </span>
+              <span
+                class="font-mono text-sm font-bold tracking-widest text-neo-black/30"
+                aria-hidden="true"
+              >
+                {service.index}
+              </span>
+            </div>
+
+            <h3 class="mt-6 font-display text-2xl font-extrabold uppercase sm:text-3xl">
+              {service.title}
+            </h3>
+
+            <p class="mt-4 leading-relaxed text-neo-black/70">{service.body}</p>
+
+            <ul class="mt-7 flex flex-col gap-2 border-t-2 border-neo-black/10 pt-6">
+              {service.deliverables.map((deliverable) => (
+                <li class="flex items-center gap-3 font-mono text-xs font-bold tracking-wider uppercase">
+                  <svg
+                    class="size-4 shrink-0"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="3.5"
+                    stroke-linecap="square"
+                    aria-hidden="true"
+                  >
+                    <path d="m5 12 5 5L20 7" />
+                  </svg>
+                  {deliverable}
+                </li>
+              ))}
+            </ul>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
