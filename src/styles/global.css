@@ -41,16 +41,25 @@
   --font-sans: var(--font-space-grotesk);
   --font-mono: var(--font-jetbrains-mono);
 
-  /* Fluid display sizes — these repeat across sections, so they are tokens. */
-  --text-hero: clamp(2.75rem, 8.5vw, 7rem);
+  /* Fluid display sizes — these repeat across sections, so they are tokens.
+     The `min` of a clamp is what actually governs on phones: below roughly
+     800px the vw term falls under it, so the min IS the mobile size. These were
+     originally set from the desktop end (hero min 2.75rem = 44px), which put a
+     44px headline inside a ~287px-wide panel at 375px and pushed the page into
+     horizontal scroll. Sized from the narrow end instead, then allowed to run
+     up: the vw terms are steeper to compensate, so the desktop end is unchanged.
+
+     Widths checked against Syne ExtraBold at ~0.60em average uppercase advance,
+     for the longest line in each role, at 320px / 375px / 430px. */
+  --text-hero: clamp(2.25rem, 10vw, 7rem);
   --text-hero--line-height: 0.92;
   --text-hero--letter-spacing: -0.03em;
 
-  --text-section: clamp(2rem, 5vw, 3.75rem);
-  --text-section--line-height: 0.98;
+  --text-section: clamp(1.875rem, 6vw, 3.75rem);
+  --text-section--line-height: 1;
   --text-section--letter-spacing: -0.02em;
 
-  --text-stat: clamp(2.75rem, 6vw, 4.5rem);
+  --text-stat: clamp(2.5rem, 7vw, 4.5rem);
   --text-stat--line-height: 1;
   --text-stat--letter-spacing: -0.03em;
 
@@ -169,12 +178,38 @@ html.lenis body {
    ========================================================================== */
 
 @layer base {
+  /* Containment, not a fix — every genuine overflow is corrected at its source.
+     This is here so that a future one-off (a long client name, a pasted URL, a
+     rotated sticker) degrades into a clipped edge instead of making the entire
+     page pan sideways, which is what "not responsive" looks like to a visitor.
+
+     `clip` rather than `hidden` deliberately: `overflow-x: hidden` on html/body
+     establishes a scroll container and silently breaks `position: sticky` on
+     the header. `clip` does not. */
+  html,
+  body {
+    overflow-x: clip;
+  }
+
   body {
     background-color: var(--color-neo-offwhite);
     color: var(--color-neo-black);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
+  }
+
+  /* Long unbroken strings — an email address, a URL — must not set the minimum
+     width of their container on a 320px screen. */
+  h1,
+  h2,
+  h3,
+  h4,
+  p,
+  li,
+  dd,
+  dt {
+    overflow-wrap: break-word;
   }
 
   h1,

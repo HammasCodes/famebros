@@ -24,7 +24,7 @@ const details = [
 
 <section
   id="book"
-  class="scroll-mt-24 border-y-4 border-neo-black bg-neo-purple py-24 text-neo-black lg:py-32"
+  class="scroll-mt-24 border-y-4 border-neo-black bg-neo-purple py-16 text-neo-black sm:py-24 lg:py-32"
 >
   <div class="neo-container">
     <div class="grid gap-12 lg:grid-cols-12 lg:gap-16">
@@ -35,9 +35,11 @@ const details = [
           05 — Book a shoot
         </p>
         <h2 class="mt-5 font-display text-section font-extrabold uppercase">
-          Let's Make<br />Something<br />That Slaps.
+          Let's Make<br class="hidden sm:inline" />Something<br
+            class="hidden sm:inline"
+          />That Slaps.
         </h2>
-        <p class="mt-6 max-w-md text-lg leading-relaxed text-neo-black/80">
+        <p class="mt-5 max-w-md text-base leading-relaxed text-neo-black/80 sm:mt-6 sm:text-lg">
           Tell us about the brand and what you're trying to grow. We read every
           message and reply within one working day.
         </p>
@@ -80,7 +82,7 @@ const details = [
         */}
         <form
           id="booking-form"
-          class="rounded-neo border-4 border-neo-black bg-neo-offwhite p-7 shadow-neo sm:p-9"
+          class="rounded-neo border-4 border-neo-black bg-neo-offwhite p-5 shadow-neo sm:p-7 lg:p-9"
         >
           <div class="grid gap-6 sm:grid-cols-2">
             <div>
@@ -148,8 +150,12 @@ const details = [
             </div>
           </div>
 
-          <div class="mt-8 flex flex-wrap items-center gap-4">
-            <NeoButton type="submit" variant="yellow">Send Enquiry</NeoButton>
+          <div
+            class="mt-8 flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-center"
+          >
+            <NeoButton type="submit" variant="yellow" class="w-full sm:w-auto">
+              Send Enquiry
+            </NeoButton>
             <p class="font-mono text-xs text-neo-black/50">
               No spam. No newsletter. Just a reply.
             </p>
@@ -160,7 +166,7 @@ const details = [
           id="booking-success"
           hidden
           tabindex="-1"
-          class="rounded-neo border-4 border-neo-black bg-neo-green p-9 shadow-neo sm:p-12"
+          class="rounded-neo border-4 border-neo-black bg-neo-green p-6 shadow-neo sm:p-9 lg:p-12"
         >
           <span
             class="inline-grid size-14 place-items-center rounded-neo-sm border-3 border-neo-black bg-neo-offwhite shadow-neo-sm"
@@ -177,10 +183,12 @@ const details = [
               <path d="m5 12 5 5L20 7"></path>
             </svg>
           </span>
-          <h3 class="mt-6 font-display text-3xl font-extrabold uppercase">
+          <h3 class="mt-6 font-display text-2xl font-extrabold uppercase sm:text-3xl">
             Message received.
           </h3>
-          <p class="mt-4 max-w-md text-lg leading-relaxed text-neo-black/80">
+          <p
+            class="mt-4 max-w-md text-base leading-relaxed text-neo-black/80 sm:text-lg"
+          >
             Thanks for reaching out. We'll come back to you within one working
             day — usually a lot sooner.
           </p>

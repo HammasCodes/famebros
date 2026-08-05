@@ -40,7 +40,7 @@ const lines = ['We Make', 'Brands', 'Go Viral.'];
 
   <div class="neo-container">
     <div
-      class="on-dark relative rounded-neo border-4 border-neo-black bg-neo-black px-6 py-14 shadow-neo-lg sm:px-10 sm:py-20 lg:px-16 lg:py-24"
+      class="on-dark relative rounded-neo border-3 border-neo-black bg-neo-black px-5 py-10 shadow-neo sm:border-4 sm:px-10 sm:py-20 sm:shadow-neo-lg lg:px-16 lg:py-24"
     >
       {/* Corner confetti. Decorative only, hidden from assistive tech. */}
       <span
@@ -50,13 +50,20 @@ const lines = ['We Make', 'Brands', 'Go Viral.'];
         class="absolute -bottom-4 -left-3 hidden size-8 -rotate-6 rounded-neo-sm border-3 border-neo-black bg-neo-green sm:block"
         aria-hidden="true"></span>
 
+      {/* The rotation is dropped below sm: a tilted pill is wider than its own
+          box, and at 320px this one already fills the panel. Text also steps
+          down a size so it stays on one line — a wrapped rounded-full pill
+          looks broken rather than deliberate. */}
       <div data-hero-item>
-        <NeoTag color="yellow" class="-rotate-2 shadow-neo-sm">
+        <NeoTag
+          color="yellow"
+          class="px-3 text-[0.625rem] shadow-neo-sm sm:-rotate-2 sm:px-4 sm:text-xs"
+        >
           Mumbai · Social Media Studio
         </NeoTag>
       </div>
 
-      <h1 class="mt-8 font-display text-hero font-extrabold uppercase">
+      <h1 class="mt-6 font-display text-hero font-extrabold uppercase sm:mt-8">
         {
           lines.map((line) => (
             <span
@@ -71,15 +78,25 @@ const lines = ['We Make', 'Brands', 'Go Viral.'];
 
       <p
         data-hero-item
-        class="mt-8 max-w-2xl text-lg leading-relaxed text-neo-offwhite/80 sm:text-xl"
+        class="mt-6 max-w-2xl text-base leading-relaxed text-neo-offwhite/80 sm:mt-8 sm:text-xl"
       >
         Social Media Marketing &amp; Content Creation that actually slaps. Reels,
         Brand Shoots, &amp; Ads.
       </p>
 
-      <div data-hero-item class="mt-10 flex flex-wrap items-center gap-4">
-        <NeoButton href="#book" variant="yellow">Book a Shoot</NeoButton>
-        <NeoButton href="#work" variant="ghost-dark">See Our Work</NeoButton>
+      {/* Full-width stacked buttons on phones. Side by side they were ~186px
+          each in a ~287px panel, so they wrapped anyway — but ragged, at two
+          different widths. Stacking is deliberate and gives a bigger target. */}
+      <div
+        data-hero-item
+        class="mt-8 flex flex-col gap-3 sm:mt-10 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4"
+      >
+        <NeoButton href="#book" variant="yellow" class="w-full sm:w-auto">
+          Book a Shoot
+        </NeoButton>
+        <NeoButton href="#work" variant="ghost-dark" class="w-full sm:w-auto">
+          See Our Work
+        </NeoButton>
       </div>
 
       {/* flex-col-reverse on each cell puts the figure above its label visually
@@ -87,7 +104,7 @@ const lines = ['We Make', 'Brands', 'Go Viral.'];
           requires and what assistive tech pairs on. */}
       <dl
         data-hero-item
-        class="mt-14 flex flex-wrap gap-x-10 gap-y-6 border-t-2 border-neo-offwhite/20 pt-8"
+        class="mt-10 grid grid-cols-2 gap-x-6 gap-y-6 border-t-2 border-neo-offwhite/20 pt-7 sm:mt-14 sm:flex sm:flex-wrap sm:gap-x-10 sm:pt-8"
       >
         {
           [
@@ -99,7 +116,7 @@ const lines = ['We Make', 'Brands', 'Go Viral.'];
               <dt class="mt-1 font-mono text-xs tracking-widest text-neo-offwhite/60 uppercase">
                 {label}
               </dt>
-              <dd class="font-display text-3xl font-extrabold text-neo-yellow">
+              <dd class="font-display text-2xl font-extrabold text-neo-yellow sm:text-3xl">
                 {value}
               </dd>
             </div>

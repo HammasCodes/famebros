@@ -41,15 +41,15 @@ const faqs = [
 ];
 ---
 
-<section id="faq" class="scroll-mt-24 py-24 lg:py-32">
+<section id="faq" class="scroll-mt-24 py-16 sm:py-24 lg:py-32">
   <div class="neo-container">
     <div class="grid gap-12 lg:grid-cols-12 lg:gap-16">
       <div class="lg:col-span-5">
         <div data-reveal class="lg:sticky lg:top-28">
           <SectionHeading eyebrow="Questions" index="04" accent="purple">
-            Everything<br />You'd Ask
+            Everything<br class="hidden sm:inline" />You'd Ask
           </SectionHeading>
-          <p class="mt-6 text-lg leading-relaxed text-neo-black/70">
+          <p class="mt-5 text-base leading-relaxed text-neo-black/70 sm:mt-6 sm:text-lg">
             If something isn't covered here, ask us directly. We answer within one
             working day.
           </p>
@@ -63,7 +63,7 @@ const faqs = [
         {
           faqs.map((faq) => (
             <details class="group rounded-neo border-3 border-neo-black bg-neo-offwhite shadow-neo">
-              <summary class="flex min-h-16 cursor-pointer items-center justify-between gap-5 rounded-neo px-6 py-5 font-display text-lg font-bold uppercase transition-colors duration-150 group-open:rounded-b-none group-open:bg-neo-purple sm:text-xl">
+              <summary class="flex min-h-16 cursor-pointer items-center justify-between gap-4 rounded-neo px-5 py-4 font-display text-lg sm:gap-5 sm:px-6 sm:py-5 font-bold uppercase transition-colors duration-150 group-open:rounded-b-none group-open:bg-neo-purple sm:text-xl">
                 {faq.question}
                 <span
                   class="inline-grid size-8 shrink-0 place-items-center rounded-neo-sm border-2 border-neo-black bg-neo-offwhite transition-transform duration-200 group-open:rotate-45"
@@ -82,7 +82,7 @@ const faqs = [
                 </span>
               </summary>
 
-              <div class="border-t-2 border-neo-black/15 px-6 pt-5 pb-6">
+              <div class="border-t-2 border-neo-black/15 px-5 pt-5 pb-6 sm:px-6">
                 <p class="leading-relaxed text-neo-black/80">{faq.answer}</p>
               </div>
             </details>

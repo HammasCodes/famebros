@@ -77,20 +77,20 @@ const projects = [
 ] as const;
 ---
 
-<section id="work" class="scroll-mt-24 py-24 lg:py-32">
+<section id="work" class="scroll-mt-24 py-16 sm:py-24 lg:py-32">
   <div class="neo-container">
     <div data-reveal>
       <SectionHeading eyebrow="Selected work" index="03" accent="purple">
-        Work That Earns<br />The Scroll
+        Work That Earns<br class="hidden sm:inline" />The Scroll
       </SectionHeading>
-      <p class="mt-6 max-w-2xl text-lg leading-relaxed text-neo-black/70">
+      <p class="mt-5 max-w-2xl text-base leading-relaxed sm:mt-6 sm:text-lg text-neo-black/70">
         Shoots, reel series, and campaigns delivered over the last twelve months.
       </p>
     </div>
 
     <div
       data-reveal-grid
-      class="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8"
+      class="mt-10 grid sm:mt-14 gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8"
     >
       {
         projects.map((project) => (

@@ -23,10 +23,10 @@ const stats = [
 
     {/* flex-col-reverse on each cell keeps <dt> ahead of <dd> in the DOM, as the
         spec requires, while the figure still reads above its label. */}
-    <dl data-reveal-grid class="mt-12 grid gap-6 sm:grid-cols-3 lg:gap-8">
+    <dl data-reveal-grid class="mt-10 grid sm:mt-12 gap-6 sm:grid-cols-3 lg:gap-8">
       {
         stats.map((stat) => (
-          <div class="flex flex-col-reverse rounded-neo border-3 border-neo-offwhite p-8 text-center shadow-neo-dark">
+          <div class="flex flex-col-reverse rounded-neo border-3 border-neo-offwhite p-6 text-center sm:p-8 shadow-neo-dark">
             <dt class="mt-3 font-mono text-xs font-bold tracking-[0.2em] text-neo-offwhite/70 uppercase">
               {stat.label}
             </dt>
